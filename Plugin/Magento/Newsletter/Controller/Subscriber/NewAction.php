@@ -13,7 +13,9 @@ use Magento\Framework\App\Action\Context;
 use Magento\Framework\App\RequestInterface;
 use Magento\Framework\Controller\Result\JsonFactory;
 use Magento\Framework\Message\Manager;
+use Magento\Framework\Validator\EmailAddress as EmailValidator;
 use Magento\Newsletter\Model\SubscriberFactory;
+use Magento\Newsletter\Model\SubscriptionManagerInterface;
 use Magento\Store\Model\StoreManagerInterface;
 
 /**
@@ -48,6 +50,8 @@ class NewAction extends \Magento\Newsletter\Controller\Subscriber\NewAction
      * @param StoreManagerInterface $storeManager
      * @param CustomerUrl $customerUrl
      * @param CustomerAccountManagement $customerAccountManagement
+     * @param SubscriptionManagerInterface $subscriptionManager
+     * @param EmailValidator $emailValidator
      */
     public function __construct(
         RequestInterface $request,
@@ -58,18 +62,22 @@ class NewAction extends \Magento\Newsletter\Controller\Subscriber\NewAction
         Session $customerSession,
         StoreManagerInterface $storeManager,
         CustomerUrl $customerUrl,
-        CustomerAccountManagement $customerAccountManagement
+        CustomerAccountManagement $customerAccountManagement,
+        SubscriptionManagerInterface $subscriptionManager,
+        EmailValidator $emailValidator = null
     ) {
         $this->request = $request;
         $this->jsonFactory = $jsonFactory;
         $this->messageManager = $messageManager;
         parent::__construct(
-            $context,
-            $subscriberFactory,
-            $customerSession,
-            $storeManager,
-            $customerUrl,
-            $customerAccountManagement
+             $context,
+             $subscriberFactory,
+             $customerSession,
+             $storeManager,
+             $customerUrl,
+             $customerAccountManagement,
+             $subscriptionManager,
+             $emailValidator
         );
     }
 
